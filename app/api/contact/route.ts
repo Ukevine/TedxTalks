@@ -1,7 +1,4 @@
-import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
@@ -11,27 +8,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const { data, error } = await resend.emails.send({
-      from: 'TEDxKHS Contact Form <onboarding@resend.dev>',
-      to: ['uwasek21@gmail.com'],
+    // Log the contact form submission (for now)
+    console.log('Contact Form Submission:', {
+      name,
+      email,
       subject: subject || 'New message from TEDxKHS Contact Form',
-      reply_to: email,
-      html: `
-        <p>You have received a new message from the contact form on your website.</p>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-      `,
+      message,
+      timestamp: new Date().toISOString()
     });
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
+    // For now, just return success
+    // You can later integrate with:
+    // - EmailJS (client-side email service)
+    // - Formspree (no API key needed)
+    // - Netlify Forms (if deploying on Netlify)
+    // - Or your own email service
 
-    return NextResponse.json({ message: 'Email sent successfully!' });
+    return NextResponse.json({ 
+      message: 'Thank you for your message! We will get back to you soon.',
+      success: true 
+    });
+
   } catch (error) {
+    console.error('Contact form error:', error);
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 });
   }
 } 
