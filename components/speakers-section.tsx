@@ -29,7 +29,7 @@ export function SpeakersSection() {
       topic: "Building Rwanda's Digital Future",
     },
     {
-      name: "Grace Mutoni",
+      name: "Narasha Urusaro",
       title: "Climate Advocate",
       image: "/images/grace.png",
       topic: "Sustainable Solutions for Tomorrow",
